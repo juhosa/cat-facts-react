@@ -1,24 +1,30 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import "./App.css";
+import Title from "./Title";
+import FactText from "./FactText";
+
+const baseUrl = "https://cat-fact.herokuapp.com";
 
 function App() {
+  const [fact, setFact] = useState("Click the button");
+
+  const getRandomFact = () => {
+    let url = baseUrl + "/facts/random";
+    fetch(url)
+      .then((resp) => resp.json())
+      .then((data) => {
+        console.log(data);
+        setFact(data.text);
+      });
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Title title="Cat facts - React" />
+
+      <button onClick={() => getRandomFact()}>get one</button>
+
+      <FactText fact={fact} />
     </div>
   );
 }
